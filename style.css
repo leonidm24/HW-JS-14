@@ -1,0 +1,44 @@
+@import url("./loader.css");
+body{
+    margin: 0;
+}
+
+ul{
+    background-color: rgb(59, 59, 187);
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: space-evenly;
+}
+
+li{
+    padding: 1rem;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color .4s, color .4s;
+}
+
+li:hover{
+    background-color: rgb(245, 245, 6);
+    color: black;
+}
+
+section{
+    min-height: 90vh;
+}
+
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th{
+    border: 1px solid black;
+}
