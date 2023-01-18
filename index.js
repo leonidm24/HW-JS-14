@@ -23,7 +23,7 @@ navItems.forEach((li) => {
         return;
       case "swapi":
         req(links.swapi)
-          .then((d) => showSwapi(d))
+          .then((d) => showSwapi(d.results))
           .catch((info) => console.error(info));
         return;
       case "list":
@@ -55,7 +55,7 @@ function showTodo(data) {
             </tbody>
     </table>
     `;
-
+  document.querySelector(".info").innerHTML = '';
   document.querySelector(".info").insertAdjacentHTML("beforeend", taskList);
 }
 
@@ -77,7 +77,7 @@ function showSwapi(data) {
             </tbody>
     </table>
     `;
-
+    document.querySelector(".info").innerHTML = '';
   document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
 }
 
@@ -99,5 +99,6 @@ function showNbu(data) {
             </tbody>
     </table>
     `;
+    document.querySelector(".info").innerHTML = '';
   document.querySelector(".info").insertAdjacentHTML("beforeend", nbuList);
 }
