@@ -78,7 +78,28 @@ function showSwapi(data) {
     </table>
     `;
     document.querySelector(".info").innerHTML = '';
-  document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
+    document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
+    
+    debugger
+
+    swapiPagination = paginationFetch("https://swapi.dev/api/people/?");
+    function paginationFetch(
+      url = swapiPagination,
+      page = 1,
+      previousResponse = []
+    ) {
+      return fetch(`${url}page=${page}`)
+        .then((response) => response.json())
+        .then((newResponse) => {
+          const response = [...previousResponse, ...newResponse];
+          if (newResponse.length !== 0) {
+            page++;
+            return paginationFetch(url, page, response);
+          }
+          return response;
+        });
+    }
+
 }
 
 function showNbu(data) {
@@ -102,3 +123,7 @@ function showNbu(data) {
     document.querySelector(".info").innerHTML = '';
   document.querySelector(".info").insertAdjacentHTML("beforeend", nbuList);
 }
+
+
+
+
