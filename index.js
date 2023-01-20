@@ -55,7 +55,7 @@ function showTodo(data) {
             </tbody>
     </table>
     `;
-  document.querySelector(".info").innerHTML = '';
+  document.querySelector(".info").innerHTML = "";
   document.querySelector(".info").insertAdjacentHTML("beforeend", taskList);
 }
 
@@ -69,37 +69,38 @@ function showSwapi(data) {
       Array.isArray(data)
         ? data
             .map((el) => {
-              return `<tr><td>${el.name}</td><td>${el.gender}</td><td>${el.homeworld}</td><td>${el.birth_year}</td></tr>`;
+              return `<tr><td>${el.name}</td><td>${el.gender}</td><td><a href="${el.homeworld}">This is my</a></td><td>${el.birth_year}</td></tr>`;
             })
             .join("")
         : ""
     }
             </tbody>
     </table>
+    <br>
     `;
-    document.querySelector(".info").innerHTML = '';
-    document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
-    
-    debugger
+  const swapiPagination = `
+    <div id="pagination">
+    <button id='previous'>Previous Page</button>
+    <button id='next'>Next Page</button>
+    <span>Total personages: ${data.count}</span>
+    </div>
+    `;
 
-    swapiPagination = paginationFetch("https://swapi.dev/api/people/?");
-    function paginationFetch(
-      url = swapiPagination,
-      page = 1,
-      previousResponse = []
-    ) {
-      return fetch(`${url}page=${page}`)
-        .then((response) => response.json())
-        .then((newResponse) => {
-          const response = [...previousResponse, ...newResponse];
-          if (newResponse.length !== 0) {
-            page++;
-            return paginationFetch(url, page, response);
-          }
-          return response;
-        });
-    }
+  document.querySelector(".info").innerHTML = "";
+  document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
 
+  document
+    .querySelector(".info")
+    .insertAdjacentHTML("beforeend", swapiPagination);
+
+  document.getElementById("previous").addEventListener("click", function () {
+    if (data.previous == null) return;
+    req(data.previous).then((d) => showSwapi(d));
+  });
+  document.getElementById("next").addEventListener("click", function () {
+    if (data.next == null) return;
+    req(data.next).then((d) => showSwapi(d));
+  });
 }
 
 function showNbu(data) {
@@ -120,10 +121,6 @@ function showNbu(data) {
             </tbody>
     </table>
     `;
-    document.querySelector(".info").innerHTML = '';
+  document.querySelector(".info").innerHTML = "";
   document.querySelector(".info").insertAdjacentHTML("beforeend", nbuList);
 }
-
-
-
-
