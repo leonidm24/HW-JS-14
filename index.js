@@ -23,7 +23,7 @@ navItems.forEach((li) => {
         return;
       case "swapi":
         req(links.swapi)
-          .then((d) => showSwapi(d.results))
+          .then((d) => showSwapi(d))
           .catch((info) => console.error(info));
         return;
       case "list":
@@ -66,8 +66,8 @@ function showSwapi(data) {
     <thead><tr><th>Name</th><th>Gender</th><th>Home World</th><th>Year of birth</th></tr></thead>
      <tbody>
     ${
-      Array.isArray(data)
-        ? data
+      Array.isArray(data?.results)
+        ? data?.results
             .map((el) => {
               return `<tr><td>${el.name}</td><td>${el.gender}</td><td><a href="${el.homeworld}">This is my</a></td><td>${el.birth_year}</td></tr>`;
             })
@@ -80,27 +80,27 @@ function showSwapi(data) {
     `;
   const swapiPagination = `
     <div id="pagination">
-    <button id='previous'>Previous Page</button>
-    <button id='next'>Next Page</button>
-    <span>Total personages: ${data.count}</span>
+    <button id='previous'>Previous page</button>
+    <button id='next'>Next page</button>
+    <span>Total personages:${data.count}</span>
     </div>
     `;
 
   document.querySelector(".info").innerHTML = "";
   document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
+  document.querySelector(".info").insertAdjacentHTML("beforeend", swapiPagination);
 
-  document
-    .querySelector(".info")
-    .insertAdjacentHTML("beforeend", swapiPagination);
 
-  document.getElementById("previous").addEventListener("click", function () {
-    if (data.previous == null) return;
-    req(data.previous).then((d) => showSwapi(d));
-  });
-  document.getElementById("next").addEventListener("click", function () {
-    if (data.next == null) return;
-    req(data.next).then((d) => showSwapi(d));
-  });
+      document.getElementById("previous").addEventListener("click", function () {
+          if (data.previous === null) return;
+          req(data.previous).then((d) => showSwapi(d));
+        });
+
+      document.getElementById("next").addEventListener("click", function () {
+        if (data.next === null) return;
+        req(data.next).then((d) => showSwapi(d));
+      });
+
 }
 
 function showNbu(data) {
