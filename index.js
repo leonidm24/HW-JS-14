@@ -85,13 +85,13 @@ function showSwapi(data) {
 
   if (data.previous != null) {
     pageButtons.push(
-      "<button class=`swapiButtons` id='previous'>Previous page</button>"
+      "<button id='previous'>Previous page</button>"
     );
   }
 
   if (data.next != null) {
     pageButtons.push(
-      "<button class=`swapiButtons` id='next'>Next page</button>"
+      "<button id='next'>Next page</button>"
     );
   }
 
