@@ -62,45 +62,61 @@ function showTodo(data) {
 function showSwapi(data) {
   loader.classList.remove("active");
   const swapiList = `
-        <table class="swapi-list">
+    <table class="swapi-list">
     <thead><tr><th>Name</th><th>Gender</th><th>Home World</th><th>Year of birth</th></tr></thead>
-     <tbody>
-    ${
-      Array.isArray(data?.results)
-        ? data?.results
-            .map((el) => {
-              return `<tr><td>${el.name}</td><td>${el.gender}</td><td><a href="${el.homeworld}">This is my</a></td><td>${el.birth_year}</td></tr>`;
-            })
-            .join("")
-        : ""
-    }
-            </tbody>
+    <tbody>
+      ${
+        Array.isArray(data?.results)
+          ? data?.results
+              .map((el, key) => {
+                req(el.homeworld).then((d) => {
+                  document.getElementById("planet-" + key).innerHTML = d.name;
+                });
+                return `<tr><td>${el.name}</td><td>${el.gender}</td><td id="planet-${key}">Loading...</td><td>${el.birth_year}</td></tr>`;
+              })
+              .join("")
+          : ""
+      }
+    </tbody>
     </table>
-    <br>
-    `;
-  const swapiPagination = `
-    <div id="pagination">
-    <button id='previous'>Previous page</button>
-    <button id='next'>Next page</button>
-    <span>Total personages:${data.count}</span>
+  `;
+
+  const pageButtons = [];
+
+  if (data.previous != null) {
+    pageButtons.push(
+      "<button class=`swapiButtons` id='previous'>Previous page</button>"
+    );
+  }
+
+  if (data.next != null) {
+    pageButtons.push(
+      "<button class=`swapiButtons` id='next'>Next page</button>"
+    );
+  }
+
+  const pageInfo =
+    pageButtons.length > 0
+      ? `
+    <div class="pageButtons">
+      ${pageButtons.join("")}
     </div>
-    `;
+  `
+      : "";
 
   document.querySelector(".info").innerHTML = "";
   document.querySelector(".info").insertAdjacentHTML("beforeend", swapiList);
-  document.querySelector(".info").insertAdjacentHTML("beforeend", swapiPagination);
+  document.querySelector(".info").insertAdjacentHTML("beforeend", pageInfo);
 
+  document.getElementById("previous")?.addEventListener("click", function () {
+    loader.classList.add("active");
+    req(data.previous).then((d) => showSwapi(d));
+  });
 
-      document.getElementById("previous").addEventListener("click", function () {
-          if (data.previous === null) return;
-          req(data.previous).then((d) => showSwapi(d));
-        });
-
-      document.getElementById("next").addEventListener("click", function () {
-        if (data.next === null) return;
-        req(data.next).then((d) => showSwapi(d));
-      });
-
+  document.getElementById("next")?.addEventListener("click", function () {
+    loader.classList.add("active");
+    req(data.next).then((d) => showSwapi(d));
+  });
 }
 
 function showNbu(data) {

@@ -42,3 +42,22 @@ table {
 td, th{
     border: 1px solid black;
 }
+
+.pageButtons {
+    display: flex;
+    justify-content: left;
+    margin-top: 30px;
+}
+
+button {
+    width: 11rem;
+    height: 3rem;
+    font-size: 22px;
+    color: black;
+    background-color: transparent;
+    border: 0.5px solid black;
+    margin: 1rem;
+    border-radius: .5rem;
+    padding: 10px;
+    cursor: pointer;
+}
